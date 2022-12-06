@@ -1,8 +1,26 @@
 import re
 import functools
+
+def parta(steps, stacks):
+	for step in steps:
+		#get the numbers out of the line
+		times,source,dest = list(map(int,re.findall('\d+',step)))
+		for i in range(times):
+			stacks[dest-1].append(stacks[source-1].pop())
+
+def partb(steps, stacks):
+	for step in steps:
+		# get all of the numbers out of the line
+		boxes,source,dest = list(map(int,re.findall('\d+',step)))
+		# get the substack to be moved
+		pile = stacks[source-1][-boxes:]
+		# remove those from original stack
+		stacks[source-1] = stacks[source-1][:-boxes]
+		# add to new stack
+		stacks[dest-1] += pile
+
 with open("input5.txt") as f:
 	stacks,directions = f.read().split('\n\n')
-
 
 stacklines = stacks.split('\n')
 # find out how many stacks are needed
@@ -21,15 +39,7 @@ for p in piles:
 	p.reverse()
 
 steps = (directions.split('\n'))[:-1]
-for step in steps:
-	# get all of the numbers out of the line
-	boxes,source,dest = list(map(int,re.findall('\d+',step)))
-	# get the substack to be moved
-	pile = piles[source-1][-boxes:]
-	# remove those from original stack
-	piles[source-1] = piles[source-1][:-boxes]
-	# add to new stack
-	piles[dest-1] += pile
+partb(steps, piles)
 
 answer = [x.pop() for x in piles]
 print(str(functools.reduce(lambda x,y: x + y, answer)))

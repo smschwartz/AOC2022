@@ -1,5 +1,14 @@
 import re
 import functools
+
+def parta(steps, stacks):
+	for step in steps:
+		#get the numbers out of the line
+		times,source,dest = list(map(int,re.findall('\d+',step)))
+		for i in range(times):
+			stacks[dest-1].append(stacks[source-1].pop())
+
+
 with open("input5.txt") as f:
 	stacks,directions = f.read().split('\n\n')
 
@@ -20,11 +29,7 @@ for p in piles:
 	p.reverse()
 
 steps = (directions.split('\n'))[:-1]
-for step in steps:
-	#get the numbers out of the line
-	times,source,dest = list(map(int,re.findall('\d+',step)))
-	for i in range(times):
-		piles[dest-1].append(piles[source-1].pop())
+parta(steps, piles)
 
 answer = [x.pop() for x in piles]
 print(str(functools.reduce(lambda x,y: x + y, answer)))
