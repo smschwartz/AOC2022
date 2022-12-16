@@ -41,7 +41,6 @@ def checkEdges(pairs,index,maxcoord):
 	beacon = pairs[index][1]
 	dist = sensor.manhattan(beacon)
 	# this is hideous and could be made functional but... I think I'm finished here
-	print("sensor",sensor,dist)
 	x1 = sensor.x 
 	y1 = sensor.y - dist - 1
 	x2 = sensor.x
@@ -96,7 +95,6 @@ print("looking...")
 found = False
 res = None
 for i,pair in enumerate(pairs):
-	print("edges of",i)
 	if found:
 		break
 	res = checkEdges(pairs,i,maxrow)
